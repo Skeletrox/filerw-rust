@@ -1,5 +1,6 @@
 pub mod simplewriter {
     use std::collections::VecDeque;
+    use std::fs::remove_file;
     use std::fs::File;
     use std::fs::OpenOptions;
     use std::io::Write;
@@ -87,11 +88,11 @@ pub mod simplewriter {
         fn test_write_multiple_vals() {
             let num_lines = 5;
             let num_vals = 10;
-            let file_name = "/tmp/rmv_test.tst".to_string();
+            let file_name = "/tmp/wmv_test2.tst".to_string();
             let mut rng = rand::thread_rng();
-            for i in 0..num_lines {
+            for _ in 0..num_lines {
                 let mut values: VecDeque<i32> = VecDeque::<i32>::new();
-                for i in 0..num_vals {
+                for _ in 0..num_vals {
                     values.push_back(rng.gen_range(0..65536));
                 }
                 let mut writable_string = values
@@ -101,6 +102,10 @@ pub mod simplewriter {
                 writable_string.push('\n');
                 append_str_to_file(&file_name, &writable_string);
             }
+            match remove_file(file_name) {
+                Ok(_) => {},
+                Err(err) => panic!("Could not delete test file: {:?}!", err),
+            };
         }
     }
 }

@@ -5,6 +5,7 @@ use crate::structs::FileMetaStruct;
 // Publicity of modules is not inherited.
 pub mod simplereader {
     use std::str::Split;
+    use std::fs::remove_file;
     use std::fs::File;
     use std::io::BufReader;
     use std::io::prelude::*;
@@ -114,6 +115,10 @@ pub mod simplereader {
                     assert_eq!(curr_line_wr[j], curr_line_re[j]);
                 }
             }
+            match remove_file(file_name) {
+                Ok(_) => {},
+                Err(err) => panic!("Could not delete test file: {:?}!", err),
+            };
 
         }
     }
